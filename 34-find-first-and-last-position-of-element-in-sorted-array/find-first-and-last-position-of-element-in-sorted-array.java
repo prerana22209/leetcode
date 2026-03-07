@@ -1,16 +1,32 @@
 class Solution {
     public int[] searchRange(int[] nums, int target) {
-        int[] ans = {-1, -1};
+        int first = findPosition(nums, target, true);
+        int last = findPosition(nums, target, false);
+        
+        return new int[] { first, last };
+    }
 
-        for(int i = 0; i < nums.length; i++){
-            if(nums[i] == target){
-                if(ans[0] == -1){
-                    ans[0] = i;
-                }
-                ans[1] = i;      
-            }
+    private int findPosition(int[] nums, int target, boolean findFirst) {
+        int left = 0;
+        int right = nums.length - 1;
+        int pos = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) {
+                pos = mid;
+                if (findFirst) 
+                    right = mid - 1;
+                else 
+                    left = mid + 1;
+            } 
+            else if (nums[mid] < target) 
+                left = mid + 1;
+            else 
+                right = mid - 1;
         }
 
-        return ans;
+        return pos;
     }
 }
